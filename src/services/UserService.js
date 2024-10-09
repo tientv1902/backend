@@ -1,5 +1,5 @@
 const User = require("../models/UserModel")
-const { gennerralAccessToken } = require("./JwtService")
+const { genneralAccessToken, genneralRefreshToken } = require("./JwtService")
 const bcrypt = require("bcrypt")
 
 const createUser = (newUser) =>{
@@ -58,12 +58,12 @@ const loginUser = (userLogin) =>{
                     
                 })
             }
-            const access_token = await gennerralAccessToken({
+            const access_token = await genneralAccessToken({
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
             
-            const refresh_token = await gennerralAccessToken({
+            const refresh_token = await genneralRefreshToken({
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
@@ -167,6 +167,8 @@ const getDetailsUser = (id) =>{
     })
 }
 
+
+
 module.exports = {
     createUser,
     loginUser,
@@ -174,4 +176,5 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailsUser,
+    
 }
