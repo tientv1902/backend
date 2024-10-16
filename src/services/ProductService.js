@@ -87,7 +87,7 @@ const getAllProduct = (limit, page, sort, filter) =>{
             const totalProduct = await Product.countDocuments()
             if(filter){
                 const lable = filter[0];
-                const allObjectFilter = await Product.find({[lable]: {'$regex' : filter[1]}}).limit(limit).skip(page * limit)
+                const allObjectFilter = await Product.find({[lable]: {'$regex' : filter[1]}})/*.limit(limit).skip(page * limit)*/
                 resolve({
                     status: 'OK',
                     message: 'Success',
