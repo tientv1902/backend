@@ -74,6 +74,8 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+
+
 const getAllProduct = async (req, res) => {
     try{
         const { limit, page , sort, filter} = req.query
@@ -92,4 +94,5 @@ module.exports = {
     getDetailsProduct,
     deleteProduct,
     getAllProduct,
+    
 }

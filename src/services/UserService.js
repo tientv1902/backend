@@ -129,6 +129,7 @@ const deleteUser = (id) =>{
     })
 }
 
+
 const getAllUser = () =>{
     return new Promise( async (resolve, reject) =>{
         try{

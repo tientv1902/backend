@@ -46,7 +46,7 @@ const updateProduct = (id, data) =>{
             }
             const updatedProduct = await Product.findByIdAndUpdate(id, data, {new: true})
             resolve({
-                    status: 'Ok',
+                    status: 'OK',
                     message: 'Success',
                     data: updatedProduct
                 })
@@ -79,6 +79,8 @@ const deleteProduct = (id) =>{
         }
     })
 }
+
+
 
 const getAllProduct = (limit, page, sort, filter) =>{
     console.log("sort", sort)
@@ -154,4 +156,5 @@ module.exports = {
     getDetailsProduct,
     deleteProduct,
     getAllProduct,
+
 }

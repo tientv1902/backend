@@ -103,6 +103,8 @@ const deleteUser = async (req, res) => {
     }
 }
 
+
+
 const getAllUser = async (req, res) => {
     try{
         const response = await UserService.getAllUser()
@@ -175,4 +177,5 @@ module.exports = {
     getDetailsUser,
     refreshToken,
     logoutUser,
+
 }
