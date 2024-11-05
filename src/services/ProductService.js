@@ -4,7 +4,7 @@ const Product = require("../models/ProductModel")
 const createProduct = (newProduct) =>{
     return new Promise( async (resolve, reject) =>{
         
-        const{ name, image, type, price, countInStock, rating, description} = newProduct
+        const{ name, image, type, price, countInStock, rating, description, discount} = newProduct
         try{
             const checkProduct = await Product.findOne({
                 name: name
@@ -17,7 +17,7 @@ const createProduct = (newProduct) =>{
             }
             
             const newProduct = await Product.create({
-                name, image, type, price, countInStock, rating, description
+                name, image, type, price, countInStock, rating, description, discount
             })
             if(newProduct){
                 resolve({
@@ -83,10 +83,10 @@ const deleteProduct = (id) =>{
 
 
 const getAllProduct = (limit, page, sort, filter) =>{
-    console.log("sort", sort)
     return new Promise( async (resolve, reject) =>{
         try{
             const totalProduct = await Product.countDocuments()
+            let allProduct = []
             if(filter){
                 const lable = filter[0];
                 const allObjectFilter = await Product.find({[lable]: {'$regex' : filter[1]}})/*.limit(limit).skip(page * limit)*/
@@ -112,7 +112,11 @@ const getAllProduct = (limit, page, sort, filter) =>{
                     totalPage: Math.ceil(totalProduct / limit)
                 })
             }
-            const allProduct = await Product.find().limit(limit).skip(page * limit)
+            if(!limit){
+                allProduct = await Product.find()
+            }else{
+                allProduct = await Product.find().limit(limit).skip(page * limit)
+            }
             resolve({
                     status: 'OK',
                     message: 'Success',
@@ -150,11 +154,26 @@ const getDetailsProduct = (id) =>{
     })
 }
 
+const getCategory = () =>{
+    return new Promise( async (resolve, reject) =>{
+        try{
+            const allCategory = await Product.distinct('type')
+            resolve({
+                    status: 'OK',
+                    message: 'Success',
+                    data: allCategory,
+                })
+        }catch (e){
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     createProduct,
     updateProduct,
     getDetailsProduct,
     deleteProduct,
     getAllProduct,
-
+    getCategory,
 }
