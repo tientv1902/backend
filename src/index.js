@@ -28,7 +28,6 @@ mongoose.connect(`${process.env.MONGO_DB}`)
     console.log(err)
 })
 
-
 app.listen(port, () => {
     console.log("Server is running in port: ", + port)
 })
