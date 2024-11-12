@@ -74,9 +74,21 @@ const deleteOrderDetails = async (req, res) => {
     }
 }
 
+const getAllOrder = async (req, res) => {
+    try{
+        const data = await OrderService.getAllOrder()
+        return res.status(200).json(data)
+    }catch(e){
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 module.exports = {
     createOrder,
     getOrderDetails,
     getDetailsOrderById,
-    deleteOrderDetails
+    deleteOrderDetails,
+    getAllOrder,
 }

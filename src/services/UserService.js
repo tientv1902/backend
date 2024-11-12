@@ -54,7 +54,7 @@ const loginUser = (userLogin) =>{
             if(!comparePassword){
                 resolve({
                     status: 'ERR',
-                    message: 'The password or user is  incorrect',
+                    message: 'The password or user is incorrect',
                     
                 })
             }
