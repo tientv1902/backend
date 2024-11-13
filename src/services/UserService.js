@@ -168,7 +168,23 @@ const getDetailsUser = (id) =>{
     })
 }
 
+const findOrCreateUser = async (payload) => {
+    const { email, name, sub } = payload;
 
+    let user = await User.findOne({ email });
+
+    // Nếu người dùng không tồn tại, tạo người dùng mới
+    if (!user) {
+        user = await User.create({
+            email,
+            name,
+            password: sub, // Sử dụng `sub` từ Google làm password tạm thời
+            isAdmin: false,
+        });
+    }
+
+    return user;
+};
 
 module.exports = {
     createUser,
@@ -177,5 +193,5 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailsUser,
-    
+    findOrCreateUser
 }

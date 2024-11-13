@@ -1,5 +1,7 @@
 const UserService = require('../services/UserService')
 const JwtService = require('../services/JwtService')
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GG_CLIENT_ID);
 
 const createUser = async (req, res) => {
     try{
@@ -31,6 +33,54 @@ const createUser = async (req, res) => {
         })
     }
 }
+
+const googleLogin = async (req, res) => {
+    const { token } = req.body; // Nhận ID token từ frontend
+    try {
+        // Xác thực ID token với Google
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GG_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+
+        // Kiểm tra xem người dùng đã tồn tại chưa
+        let user = await UserService.findOrCreateUser(payload);
+
+        // Tạo access_token và refresh_token
+        const access_token = await JwtService.genneralAccessToken({
+            id: user.id,  // Sử dụng 'user' thay vì 'checkUser'
+            isAdmin: user.isAdmin
+        });
+        
+        const refresh_token = await JwtService.genneralRefreshToken({
+            id: user.id,  // Sử dụng 'user' thay vì 'checkUser'
+            isAdmin: user.isAdmin
+        });
+
+        // Lưu refresh_token vào cookie
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: false,
+            samesite: 'strict'
+        });
+
+        return res.status(200).json({
+            status: 'OK',
+            message: 'Login successful',
+            access_token,
+            user,
+        });
+    } catch (error) {
+        console.error("Google login error:", error);  // Ghi lỗi chi tiết vào console để debug
+        return res.status(500).json({
+            status: 'ERR',
+            message: 'Google login failed',
+            error: error.message
+        });
+    }
+};
+
 
 const loginUser = async (req, res) => {
     try{
@@ -177,5 +227,5 @@ module.exports = {
     getDetailsUser,
     refreshToken,
     logoutUser,
-
+    googleLogin
 }
