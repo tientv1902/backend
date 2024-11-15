@@ -36,7 +36,6 @@ const refreshTokenJwtService = (token) => {
                     id: user?.id,
                     isAdmin: user?.isAdmin
                 })
-                // console.log('access_token', access_token)
                 resolve({
                     status: 'OK',
                     message: 'SUCCESS',

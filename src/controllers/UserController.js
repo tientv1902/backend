@@ -35,9 +35,8 @@ const createUser = async (req, res) => {
 }
 
 const googleLogin = async (req, res) => {
-    const { token } = req.body; // Nhận ID token từ frontend
+    const { token } = req.body;
     try {
-        // Xác thực ID token với Google
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: process.env.GG_CLIENT_ID,
@@ -47,18 +46,16 @@ const googleLogin = async (req, res) => {
         // Kiểm tra xem người dùng đã tồn tại chưa
         let user = await UserService.findOrCreateUser(payload);
 
-        // Tạo access_token và refresh_token
         const access_token = await JwtService.genneralAccessToken({
-            id: user.id,  // Sử dụng 'user' thay vì 'checkUser'
+            id: user.id,  
             isAdmin: user.isAdmin
         });
         
         const refresh_token = await JwtService.genneralRefreshToken({
-            id: user.id,  // Sử dụng 'user' thay vì 'checkUser'
+            id: user.id, 
             isAdmin: user.isAdmin
         });
 
-        // Lưu refresh_token vào cookie
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: false,
@@ -102,7 +99,6 @@ const loginUser = async (req, res) => {
         }
         const response = await UserService.loginUser(req.body)
         const {refresh_token, ...newReponse} = response
-        // console.log("response",response)
         res.cookie('refresh_token', refresh_token), {
             httpOnly: true,
             secure: false,

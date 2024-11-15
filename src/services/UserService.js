@@ -173,7 +173,6 @@ const findOrCreateUser = async (payload) => {
 
     let user = await User.findOne({ email });
 
-    // Nếu người dùng không tồn tại, tạo người dùng mới
     if (!user) {
         user = await User.create({
             email,

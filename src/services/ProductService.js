@@ -89,7 +89,7 @@ const getAllProduct = (limit, page, sort, filter) =>{
             let allProduct = []
             if(filter){
                 const lable = filter[0];
-                const allObjectFilter = await Product.find({[lable]: {'$regex' : filter[1]}})/*.limit(limit).skip(page * limit)*/
+                const allObjectFilter = await Product.find({[lable]: {'$regex' : filter[1]}})
                 resolve({
                     status: 'OK',
                     message: 'Success',
