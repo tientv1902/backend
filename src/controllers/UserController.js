@@ -72,7 +72,7 @@ const googleLogin = async (req, res) => {
             user,
         });
     } catch (error) {
-        console.error("Google login error:", error);  // Ghi lỗi chi tiết vào console để debug
+        console.error("Google login error:", error);  
         return res.status(500).json({
             status: 'ERR',
             message: 'Google login failed',

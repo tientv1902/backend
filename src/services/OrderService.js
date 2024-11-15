@@ -4,7 +4,7 @@ const EmailService = require("../services/EmailService")
 
 const createOrder = (newOrder) => {
     return new Promise(async (resolve, reject) => {
-        const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, user, fullName, address, city, phone, isPaid, paidAt, email } = newOrder;
+        const { orderItems,shippingMethod, paymentMethod, itemsPrice, shippingPrice, totalPrice, user, fullName, address, city, phone, isPaid, paidAt, email } = newOrder;
 
         const formattedOrderItems = orderItems.map(item => ({
             product: item.id, 
@@ -56,6 +56,7 @@ const createOrder = (newOrder) => {
                     city,
                     phone
                 },
+                shippingMethod,
                 paymentMethod,
                 itemsPrice,
                 shippingPrice,
