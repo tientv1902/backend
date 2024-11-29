@@ -14,6 +14,8 @@ async function sendEmailCreateOrder(newOrder) {
         }
     });
 
+    const email = newOrder.email; 
+
     let listItems = '';
     const attachments = newOrder.orderItems.map((order, index) => {
         listItems += `
@@ -33,14 +35,13 @@ async function sendEmailCreateOrder(newOrder) {
     try {
         await transporter.sendMail({
             from: process.env.MAIL_ACCOUNT,
-            to: process.env.MAIL_ACCOUNT,
+            to: email,
             subject: 'Xác nhận đặt hàng thành công',
             html: `<h1>Cảm ơn bạn đã đặt hàng!</h1><p>Thông tin chi tiết đơn hàng:</p> ${listItems}`,
             attachments: attachments
         });
-        console.log("Email đã gửi thành công");
     } catch (error) {
-        console.error("Gửi email thất bại: ", error);
+        console.error(error);
     }
 }
 
